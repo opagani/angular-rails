@@ -13,11 +13,6 @@ angular.module('popcornApp', ['ngRoute', 'popcornApp.controllers', 'popcornApp.s
             templateUrl: '/templates/movies.html',
             controller: 'MoviesController'
           })
-        .when('/login', 
-          {
-            templateUrl: '/templates/login.html', 
-            controller: 'LoginController'
-          })
         .otherwise({redirectTo: '/'});
       $locationProvider.html5Mode(true);
   });
