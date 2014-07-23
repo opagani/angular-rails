@@ -1,18 +1,27 @@
 'use strict';
 
 angular.module('popcornApp.controllers')
-.controller('LoginController',
-  function($scope, $location) {
+.controller('LoginController', function($scope, $location, UserService) {
     $scope.signup = {};
     $scope.login = {};
 
+    UserService.currentUser().then(function(user) {
+      $scope.user = user;
+    });
+
     $scope.submitSignup = function() {
-      console.log($scope.signup);
-      // ...
+      UserService.login($scope.signup.email).then(function(user) {
+        console.log(user);
+        $scope.user = user;
+        $location.path("/");
+      });
     };
 
     $scope.submitLogin = function() {
-      console.log($scope.login);
-      // ...
+      UserService.login($scope.login.email).then(function(user) {
+        console.log(user);
+        $scope.user = user;
+        $location.path("/");
+      });
     };
 });
