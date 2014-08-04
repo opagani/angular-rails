@@ -29,13 +29,17 @@ angular.module('popcornApp.services', [])
     return d.promise;
   }
 })
-.service('UserService', function($q, $cookieStore) {
+.service('UserService', 
+   function($rootScope, $q, $cookieStore) {
      var service = this;
      this._user = null;
+
      this.setCurrentUser = function(u) {
        service._user = u;
        $cookieStore.put('user', u);
+       $rootScope.$broadcast("user:set", u);
      };
+
      this.currentUser = function() {
        var d = $q.defer();
        if(service._user) {
@@ -48,6 +52,7 @@ angular.module('popcornApp.services', [])
        }
        return d.promise;
      };
+
      this.login = function(email) {
        var d = $q.defer();
        var user = {
@@ -59,11 +64,13 @@ angular.module('popcornApp.services', [])
        d.resolve(user);
        return d.promise;
      };
+     
      this.logout = function() {
        var d = $q.defer();
        service._user = null;
        $cookieStore.remove('user');
+       $rootScope.$broadcast("user:unset");
        d.resolve();
        return d.promise;
      };
-});
+  });
